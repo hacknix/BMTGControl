@@ -5,6 +5,7 @@ use strict;
 use Proc::Daemon;
 #use LWP::ConsoleLogger::Everywhere ();
 use Sys::Syslog qw(:DEFAULT setlogsock);
+use File::Tail::Inotify2;
 
 package MMDVM::TGControl::Daemon;
 
@@ -53,6 +54,12 @@ sub bye
 	exit(0);
 };
 
+sub work {
+    my($self) = shift;
+    print(shift);
+    &bye if($GLOBAL::int);
+};
+
 sub mainloop {
 	my($self) = shift;
 	#Setup handlers
@@ -66,10 +73,10 @@ sub mainloop {
 	
     chdir('/');
     
-    while(1) {
-    
-        #Do stuff
-        sleep(10);
-        &bye if($GLOBAL::int);
-    };
+    my($watcher) = File::Tail::Inotify2->new(
+        file    => $filename,
+        on_read => \&work($self);;
+        }
+    );
+    $watcher->poll;      
 };

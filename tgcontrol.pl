@@ -17,7 +17,7 @@ sub main {
     });
     my($res,$code,$message);
     $bmobj->dropdynamic(2);
-     $res = $bmobj->json_response;
+    $res = $bmobj->json_response;
     print("$$res{code} $$res{message}\n");
     print('Jsonres: '.$bmobj->json_response."\n");
     $bmobj->add_static_tg(1,2351);
