@@ -6,6 +6,7 @@ use Proc::Daemon;
 #use LWP::ConsoleLogger::Everywhere ();
 use Sys::Syslog qw(:DEFAULT setlogsock);
 use File::Tail::Inotify2;
+use BrandMeister::API;
 
 package MMDVM::TGControl::Daemon;
 
@@ -16,7 +17,7 @@ $VERSION = '0.1';
 sub new
 {
 	#Daemonise
-	Proc::Daemon::Init;
+#	Proc::Daemon::Init;
 	my($class) = shift;
 	my($self) = shift;
 	return(undef) unless (ref($self) =~ m/HASH/);
@@ -30,7 +31,7 @@ sub new
         BM_APIKEY   =>   'oIp8qzFiT.vIrJ63.agTf.yPILicyCUWih2IRH$HGtn49u88Eo.UmxG1fZeOy6IQnKwbotT1Xe64IecjDbbZIR.YOcJjio7G6DSu4Iw@XC3CRgWrr4o7Wm2HzM.S85ve',
         DMRID       => '235135',
     });
-	
+    $MMDVM::TGControl::Daemon::self = $self;
 	return($self);
 };
 
@@ -55,7 +56,7 @@ sub bye
 };
 
 sub work {
-    my($self) = shift;
+    my($self) = $MMDVM::TGControl::Daemon::self;
     print(shift);
     &bye if($GLOBAL::int);
 };
@@ -72,11 +73,11 @@ sub mainloop {
 	my($bmobj) = $self->{_BM_APIOBJ};
 	
     chdir('/');
-    
+
+    my($filename) = $self->{LOGFILE};
     my($watcher) = File::Tail::Inotify2->new(
         file    => $filename,
-        on_read => \&work($self);;
-        }
+        on_read => \&work
     );
     $watcher->poll;      
 };
