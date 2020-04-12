@@ -3,7 +3,7 @@ BEGIN { push(@INC,'./lib/');}
 use strict;
 
 use Proc::Daemon;
-use LWP::ConsoleLogger::Everywhere ();
+#use LWP::ConsoleLogger::Everywhere ();
 use Sys::Syslog qw(:DEFAULT setlogsock);
 use MMDVM::TGControl::Tail;
 use MMDVM::TGControl::Timer;
@@ -18,7 +18,7 @@ $VERSION = '0.1';
 sub new
 {
 	#Daemonise
-	#Proc::Daemon::Init;
+	Proc::Daemon::Init;
 	my($class) = shift;
 	my($self) = shift;
 	return(undef) unless (ref($self) =~ m/HASH/);
@@ -95,7 +95,7 @@ sub _do_work {
         return;
         };
         $jsonres = $bmobj->json_response;
-        if ($$jsonres{code} eq 'OKSTAY') {
+        if (ref($jsonres) eq "HASH" && $$jsonres{code} eq 'OKSTAY') {
         _log('Dynamic mappings dropped'); 
         } else {
         _log('Dynamic mappings not dropped - BM API server returned an error: '.$$jsonres{code}); 
@@ -108,7 +108,7 @@ sub _do_work {
                 return;
             };
             $jsonres = $bmobj->json_response;
-            if ($$jsonres{code} eq 'OK') {
+            if (ref($jsonres) eq "HASH" && $$jsonres{code} eq 'OK') {
                 _log('Previous static dropped'); 
             } else {
                 _log('Previous static not dropped - BM API server returned an error: '.$$jsonres{code}); 
@@ -121,7 +121,7 @@ sub _do_work {
         return;
         };
         $jsonres = $bmobj->json_response;
-        if ($$jsonres{code} eq 'OK') {
+        if (ref($jsonres) eq "HASH" && $$jsonres{code} eq 'OK') {
         _log('Static TG Added'); 
         } else {
         _log('Static TG not added - BM API server returned an error: '.$$jsonres{code}); 
@@ -162,7 +162,7 @@ sub default {
     return;
     };
     $jsonres = $bmobj->json_response;
-    if ($$jsonres{code} eq 'OK') {
+    if (ref($jsonres) eq "HASH" && $$jsonres{code} eq 'OK') {
         _log('Static TG Added'); 
     } else {
         _log('Static TG not added - BM API server returned an error: '.$$jsonres{code}); 
