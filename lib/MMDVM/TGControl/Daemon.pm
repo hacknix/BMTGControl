@@ -55,14 +55,13 @@ sub bye
 	exit(0);
 };
 
-sub work {
+sub _work {
     my($self) = $MMDVM::TGControl::Daemon::self;
-    #print log for testing
-    $self->do_work(shift);
+    $self->_do_work(shift);
     &bye if($GLOBAL::int);
 };
 
-sub do_work {
+sub _do_work {
     my($self) = shift;
     my($line) = shift;
     my($bmobj) = $self->{_BM_APIOBJ};
@@ -138,7 +137,7 @@ sub mainloop {
     my($filename) = $self->{LOGFILE};
     my($watcher) = MMDVM::TGControl::Tail->new(
         file    => $filename,
-        on_read => \&work
+        on_read => \&_work
     );
     $watcher->poll;      
 };
