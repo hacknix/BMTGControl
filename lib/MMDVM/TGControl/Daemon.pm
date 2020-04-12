@@ -195,17 +195,17 @@ sub mainloop {
     
     $self->{_TIMER_OBJ} = MMDVM::TGControl::Timer->new();
     
-    $self->default();
+     $self->default() if ($self->{DEFAULT_TG});
     
     while (1) {
         $watcher->poll_once;  
         
         if ($self->{_TIMER_OBJ}->check_timer() && ($self->{_CURRENT_TG} != $self->{DEFAULT_TG})) {
-            $self->default();
+            $self->default() if ($self->{DEFAULT_TG});;
         }
         
         if ($GLOBAL::defaultnow) {
-            $self->default();
+            $self->default() if ($self->{DEFAULT_TG});
             $GLOBAL::defaultnow = 0;
         }
         

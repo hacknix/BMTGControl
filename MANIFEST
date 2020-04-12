@@ -4,8 +4,8 @@ Makefile.PL
 tgcontrol.pl
 tgcontrol-daemon.pl
 lib/
-lib/MMDVM
-lib/MMDVM/TGControl
+lib/MMDVM/
+lib/MMDVM/TGControl/
 lib/MMDVM/TGControl/Timer.pm
 lib/MMDVM/TGControl/.Daemon.pm.kate-swp
 lib/MMDVM/TGControl/Tail.pm
