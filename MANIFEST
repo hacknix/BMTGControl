@@ -1,7 +1,8 @@
 MANIFEST
 MANIFEST.SKIP
 Makefile.PL
-lib/BrandMeister/API.pm
+tgcontrol.pl
+tgcontrol-daemon.pl
 lib/
 lib/MMDVM
 lib/MMDVM/TGControl
