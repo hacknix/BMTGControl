@@ -20,9 +20,12 @@ sub main
 # 		require '/etc/tgcontrol-daemon.conf';
 # 	};
 	my($daemonobj) = MMDVM::TGControl::Daemon->new({
-                    LOGFILE     =>  '/var/log/pi-star/MMDVM-2020-04-11.log',
+                    LOGFILE     =>  '/var/exports/mmdvm/log',
                     DEFAULT_TG  =>  2350,
-                    TIMEOUT     =>  600
+                    TIMEOUT     =>  1,
+                    DAEMON      =>  1,
+                    BM_APIKEY   =>  'oIp8qzFiT.vIrJ63.agTf.yPILicyCUWih2IRH$HGtn49u88Eo.UmxG1fZeOy6IQnKwbotT1Xe64IecjDbbZIR.YOcJjio7G6DSu4Iw@XC3CRgWrr4o7Wm2HzM.S85ve',
+                    DMRID       =>  2342690
             });
 	die('No config hash passed, check config file.') if (!defined($daemonobj));
 	$daemonobj->mainloop;
